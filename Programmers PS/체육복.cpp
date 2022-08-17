@@ -8,34 +8,34 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int solution(int n, vector<int> lost, vector<int> reserve) {
-    int answer = 0;
-    vector<int> v;
-    v.push_back(0);
-    for(int i=1; i<=n; i++) v.push_back(1);
-    for(int i=0; i<reserve.size(); i++) v[reserve[i]]+=1;
+    int answer = n - lost.size();
+    sort(lost.begin(), lost.end());
+    sort(reserve.begin(), reserve.end());
     
-    v.push_back(0);
     for(int i=0; i<lost.size(); i++){
-        if(v[lost[i]]>1) v[lost[i]] -= 1;
-        else if(v[lost[i]]<=1){
-            if(v[lost[i]-1] <= v[lost[i]+1]){
-                v[lost[i]-1] -= 1;
-                v[lost[i]] += 1;
-            }
-            else {
-                v[lost[i]-1] += 1;
-                v[lost[i]] += 1;
+        for(int j=0; j<reserve.size(); j++){
+            if(lost[i]==reserve[j]){
+                answer ++;
+                lost[i] = -1;
+                reserve[j] = -1;
+                break;
             }
         }
     }
     
-    
-    for(int i = 1; i<=n; i++ ){
-        if(v[i]>=1) answer++;
+    for(int i=0; i<lost.size(); i++){
+        for(int j=0; j<reserve.size(); j++){
+            if((lost[i]-1 == reserve[j] || lost[i]+1 == reserve[j])){
+                answer++;
+                reserve[j] = -1;
+                break;
+            }
+        }
     }
     
     return answer;
