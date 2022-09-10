@@ -11,39 +11,43 @@
 
 using namespace std;
 
-vector<int> solution(int n, long long left, long long right) {
-    vector<int> answer;
-    
-    int first = 1;
-    long long idx = 0;
-    for(int i=0; i<n; i++){
-        int colCnt = 0;
-        while(1){
-            answer.push_back(first);
-            colCnt++;
-    
-            if(colCnt > i) break;
-        }
-        int temp=first+1;
-        while(1){
-            answer.push_back(temp++);
-            colCnt++;
-            
-            if(colCnt > n-1) break;
-        }
-        first ++;
-    }
-    
+vector<int> arrSubstring(vector<int> v, long long left, long long right){
     vector<int> solution;
     
-    for(long long i=left; i<right+1; i++){
-        solution.push_back(answer[i]);
+    
+    for(int i=left; i<right+left+1; i++){
+        solution.push_back(v[i]);
     }
     
     return solution;
 }
+
+vector<int> solution(int n, long long left, long long right) {
+    vector<int> answer;
+    
+    long long first = left/n  + 1;
+    long long origin_gap = right - left;
+    right += n;
+    
+    for(long long i=left; i<right;){
+        for(long long j=0; j<first; j++) {
+            answer.push_back(first);
+            if(answer.size() > right - left) return arrSubstring(answer, left%n%n, origin_gap);
+        }
+        long long temp = first;
+        for(long long j=first; j<n; j++){
+            answer.push_back(++temp);
+            if(answer.size() > right - left) return arrSubstring(answer, left%n%n, origin_gap);
+        }
+        first++;
+    }
+    
+    return answer;
+}
+
+
 int main(){
-    vector<int> v = solution(3, 2, 5);
+    vector<int> v = solution(4, 7, 14);
     for(auto i: v){
         cout<< i<<" ";
     }
