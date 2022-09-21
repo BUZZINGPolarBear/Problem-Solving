@@ -10,40 +10,34 @@
 #include <algorithm>
 
 using namespace std;
+int dp[105][105] = {0, };
+int h[105]={0, }, p[105]={0, };
 
 int main(){
     int n;
-    long long ans = 0;
-    vector<int> a, b;
-    vector<pair<int, int> > v_pair, dp;
-    
     cin>>n;
-    for(int i=0; i<n; i++){
-        int input;
-        cin>>input;
-        v_pair.push_back({input, 0});
+    for(int i=1; i<=n; i++){
+        int temp;
+        cin>>temp;
+        h[i] = temp;
     }
-    for(int i=0; i<n; i++){
-        int input, temp;
-        cin>>input;
-        temp = v_pair[i].first;
-        
-        v_pair[i] = {temp, input};
+    for(int i=1; i<=n; i++){
+        int temp;
+        cin>>temp;
+        p[i] = temp;
     }
     
-    sort(v_pair.begin(), v_pair.end());
-    
-    dp.push_back(v_pair[0]);
-    for(int i=1; i<v_pair.size(); i++){
-        if(dp[i-1].first + v_pair[i].first < 100) dp.push_back({dp[i-1].first + v_pair[i].first, dp[i-1].second + v_pair[i].second});
-        else{
-            int j=0;
-            for(j; j<i; j++){
-                if(dp[i-1].first + dp[j].first>100) break;
+    for(int i=1; i<=n; i++){
+        for(int j=1; j<=100; j++){
+            if(j - h[i] >=0){
+                dp[i][j] = max(dp[i-1][j], dp[i-1][j-h[i]] + p[i]);
             }
-            
+            else{
+                dp[i][j] = dp[i-1][j];
+            }
         }
     }
+    cout<<dp[n][99];
     
-    
+    return 0;
 }

@@ -24,13 +24,18 @@ int main(){
         cin>>weight>>value;
         v.push_back({weight, value});
     }
-    sort(v.begin(), v.end());
     
     for(int i=1; i<=n; i++){
-        for(int j=1; j<n; j++){
-            if(v[i].second)
+        for(int j=1; j<=k; j++){
+            if(j - v[i].first >=0){
+                dp[i][j] = max(dp[i-1][j], dp[i-1][j-v[i].first] + v[i].second);
+            }
+            else{
+                dp[i][j] = dp[i-1][j];
+            }
         }
     }
-    
-    
+        
+    cout<<dp[n][k];
+    return 0;
 }
