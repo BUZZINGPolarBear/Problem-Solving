@@ -9,46 +9,54 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
-
 using namespace std;
-long long visited[10005] = {0, 1, 0, };
+int visited[505] = {0, };
+int field[505][505] = {0, };
 
-int solution(vector<pair <int, int> > v, int n){
-    int answer = 0;
-    sort(v.begin(), v.end());
-    queue<pair<int, int> > q;
-    
-    if(v[0].first != 1) return 0;
-    else{
-        for(auto i : v)
-        {
-            if(visited[i.second] == 0) visited[i.second] = visited[i.first] + 1;
-            else continue;
-        }
-        
-        for(int i=1; i<=n; i++)
-        {
-            if(visited[i]<4) answer++;
-        }
-        
+void show_tree(int n){
+    cout<<"=========현재 트리 상태============\n";
+    for(int i=0; i<n; i++){
+        cout<<visited[i]<<" ";
     }
-    
-    return answer-2;
+    cout<<"\n";
 }
 
 int main(){
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    int ans = 0;
     int n, m;
-    vector<pair <int, int> > v;
-    
+    queue<int> q;
     cin>>n>>m;
     
-    while(m--){
-        int temp1, temp2;
-        cin>>temp1 >> temp2;
-        v.push_back({temp1, temp2});
+    for(int i=0; i<m; i++){
+        int a, b;
+        cin>>a>>b;
+        
+        field[a][b] = 1;
+        field[b][a] = 1;
+        if(a==1){
+            q.push(b);
+            visited[b] = 1;
+            ans++;
+        }
+    }
+//    show_tree(n);
+    visited[1] = 1;
+    while(!q.empty()){
+        int now = q.front();
+        q.pop();
+        
+        for(int i=1; i<=n; i++){
+            if(field[now][i] == 1 && visited[i] == 0){
+                visited[i] = visited[now]+1;
+                q.push({i});
+                
+                if(visited[i] == 2) ans++;
+            }
+        }
+//        show_tree(n);
     }
     
-    cout<<solution(v, n);
-    
+    cout<<ans;
     return 0;
 }
