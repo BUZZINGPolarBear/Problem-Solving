@@ -2,7 +2,7 @@
 //  스네이크버드.cpp
 //  Problem_Solving
 //
-//  Created by joonhwi on 2022/11/14.
+//  Created by joonhwi on 2023/02/18.
 //
 
 #include <iostream>
@@ -11,23 +11,23 @@
 using namespace std;
 
 int main(){
-    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    
     int n, l;
+    vector<int> v;
     
     cin>>n>>l;
-    vector<int> v(n);
-    
     for(int i=0; i<n; i++){
-        cin>>v[i];
+        int temp;
+        cin>>temp;
+        
+        v.push_back(temp);
     }
     
     sort(v.begin(), v.end());
     
-    for(auto idx:v){
-        if(idx <= l) l++;
+    for(int i=0; i<v.size(); i++){
+        if(v[i] <= l) l++;
+        else break;
     }
     
     cout<<l;
-    return 0;
 }
